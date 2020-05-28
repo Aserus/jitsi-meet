@@ -124,9 +124,13 @@ class PasswordForm extends Component<Props, State> {
         if (this.props.editEnabled) {
             let digitPattern, placeHolderText;
 
-            if (this.props.passwordNumberOfDigits) {
+            const tmpProp = {
+                passwordNumberOfDigits: 6
+            };
+
+            if (tmpProp.passwordNumberOfDigits) {
                 placeHolderText = this.props.t('passwordDigitsOnly', {
-                    number: this.props.passwordNumberOfDigits });
+                    number: tmpProp.passwordNumberOfDigits });
                 digitPattern = '\\d*';
             }
 
@@ -138,7 +142,7 @@ class PasswordForm extends Component<Props, State> {
                     <input
                         autoFocus = { true }
                         className = 'info-password-input'
-                        maxLength = { this.props.passwordNumberOfDigits }
+                        maxLength = { tmpProp.passwordNumberOfDigits }
                         onChange = { this._onEnteredPasswordChange }
                         pattern = { digitPattern }
                         placeholder = { placeHolderText }
