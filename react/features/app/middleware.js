@@ -1,5 +1,7 @@
 // @flow
 
+import { getProfileTabProps } from '../settings/functions';
+
 import {
     createConnectionEvent,
     sendAnalytics
@@ -14,6 +16,8 @@ import { MiddlewareRegistry } from '../base/redux';
 
 import { reloadNow } from './actions';
 import { _getRouteToRender } from './getRouteToRender';
+
+declare var APP: Object;
 
 MiddlewareRegistry.register(store => next => action => {
     switch (action.type) {
@@ -170,3 +174,46 @@ function _setRoom(store, next, action) {
 
     return result;
 }
+
+MiddlewareRegistry.register(store => next => action => {
+    if (action.type === 'PARTICIPANT_UPDATED' && action.participant && action.participant.role === 'moderator') {
+
+        const state = store.getState();
+        const conferenceState = state['features/base/conference'];
+
+        if (conferenceState.authLogin) {
+            const conference = conferenceState.conference;
+            const profile = getProfileTabProps(state);
+
+            // Установить дефолтное имя для организаторов
+            if (!profile.displayName) {
+                let displayName = conferenceState.authLogin.split('@')[0] || 'User';
+
+                displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1)
+                APP.conference.changeLocalDisplayName(displayName);
+            }
+
+
+            // Начать запись конференции
+            if (!(state['features/recording']
+                && state['features/recording'].sessionDatas
+                && state['features/recording'].sessionDatas.length)) {
+                const appData = JSON.stringify({
+                    'file_recording_metadata': {
+                        'share': false
+                    }
+                });
+
+                conference.startRecording({
+                    mode: 'file',
+                    appData
+                });
+            }
+
+
+        }
+    }
+
+
+    return next(action);
+});
