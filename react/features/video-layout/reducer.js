@@ -18,7 +18,7 @@ const DEFAULT_STATE = {
      * @public
      * @type {boolean}
      */
-    tileViewEnabled: false
+    tileViewEnabled: true
 };
 
 const STORE_NAME = 'features/video-layout';
@@ -30,10 +30,16 @@ PersistenceRegistry.register(STORE_NAME, {
 ReducerRegistry.register(STORE_NAME, (state = DEFAULT_STATE, action) => {
     switch (action.type) {
     case SCREEN_SHARE_PARTICIPANTS_UPDATED: {
-        return {
+        const res = {
             ...state,
             screenShares: action.participantIds
         };
+
+        if (!action.participantIds || action.participantIds.length === 0) {
+            res.tileViewEnabled = true;
+        }
+
+        return res;
     }
 
     case SET_TILE_VIEW:
