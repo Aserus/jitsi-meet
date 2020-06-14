@@ -148,9 +148,7 @@ function AddPeopleDialog({
             <div className = 'invite-more-dialog'>
                 { !_hideInviteContacts && <InviteContactsSection /> }
                 <CopyMeetingLinkSection url = { _inviteUrl } />
-                <InviteByEmailSection
-                    inviteSubject = { inviteSubject }
-                    inviteText = { invite } />
+
                 {
                     _liveStreamViewURL
                         && <LiveStreamSection liveStreamViewURL = { _liveStreamViewURL } />

@@ -16,6 +16,12 @@
             var roomName = encodeURIComponent(window.location.pathname);
             window.location.href = "static/recommendedBrowsers.html" + "?room=" + roomName;
         }
+        var checkLatin = /[^A-Za-z-0-9]/;
+        while (checkLatin.test(window.location.pathname)) {
+            var roomName = encodeURIComponent(window.location.pathname);
+            window.location.href = "static/latinPath.html" + "?room=" + window.location.pathname;
+        }
+        //console.log('path',window.location.pathname)
 
         window.indexLoadedTime = window.performance.now();
         console.log("(TIME) index.html loaded:\t", indexLoadedTime);

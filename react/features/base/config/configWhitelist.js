@@ -151,5 +151,6 @@ export default [
     'useNicks',
     'useStunTurn',
     'webrtcIceTcpDisable',
-    'webrtcIceUdpDisable'
+    'webrtcIceUdpDisable',
+    'userListToRecord'
 ].concat(extraConfigWhitelist);

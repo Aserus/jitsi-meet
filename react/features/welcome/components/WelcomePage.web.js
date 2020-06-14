@@ -204,6 +204,7 @@ class WelcomePage extends AbstractWelcomePage {
                                     className = 'enter-room-input'
                                     id = 'enter_room_field'
                                     onChange = { this._onRoomChange }
+                                    onKeyUp = { this._onRoomKeyUp }
                                     pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
                                     placeholder = { this.state.roomPlaceholder }
                                     ref = { this._setRoomInputRef }
@@ -278,6 +279,16 @@ class WelcomePage extends AbstractWelcomePage {
      */
     _onRoomChange(event) {
         super._onRoomChange(event.target.value);
+    }
+
+    _onRoomKeyUp(event) {
+        const input = event.target;
+        let value = input.value;
+        const rep = /[^A-Za-z-0-9]/;
+        while (rep.test(value)) {
+            value = value.replace(rep, '');
+        }
+        input.value = value.trim();
     }
 
     /**

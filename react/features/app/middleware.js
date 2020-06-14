@@ -181,23 +181,27 @@ MiddlewareRegistry.register(store => next => action => {
         const state = store.getState();
         const conferenceState = state['features/base/conference'];
 
+
         if (conferenceState.authLogin) {
             const conference = conferenceState.conference;
             const profile = getProfileTabProps(state);
+            const username = conferenceState.authLogin.split('@')[0] || 'User';
 
             // Установить дефолтное имя для организаторов
             if (!profile.displayName) {
-                let displayName = conferenceState.authLogin.split('@')[0] || 'User';
-
-                displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1)
+                let displayName = username.charAt(0).toUpperCase() + username.slice(1);
                 APP.conference.changeLocalDisplayName(displayName);
             }
 
 
             // Начать запись конференции
+            const { userListToRecord } = state['features/base/config'];
             if (!(state['features/recording']
                 && state['features/recording'].sessionDatas
-                && state['features/recording'].sessionDatas.length)) {
+                && state['features/recording'].sessionDatas.length)
+                && userListToRecord
+                && userListToRecord.length
+                && userListToRecord.includes(username)) {
                 const appData = JSON.stringify({
                     'file_recording_metadata': {
                         'share': false

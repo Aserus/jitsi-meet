@@ -489,7 +489,16 @@ var config = {
 
     // If set to true all muting operations of remote participants will be disabled.
     // disableRemoteMute: true,
-
+    userListToRecord: [
+        'sz',
+        'dvs',
+        'sib',
+        'zapsib',
+        'privolz',
+        'ug',
+        'ural',
+        'svsib'
+    ],
     // List of undocumented settings used in jitsi-meet
     /**
      _immediateReloadThreshold
